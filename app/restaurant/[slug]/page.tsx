@@ -1,4 +1,3 @@
-import NavBar from "../../components/NavBar";
 import Header from "./components/Header";
 import Rating from "./components/Rating";
 import RestaurantNavBar from "./components/RestaurantNavBar";
