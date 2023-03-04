@@ -3,6 +3,12 @@ import RestaurantCard from "./components/RestaurantCard";
 import SearchSidebar from "./components/SearchSidebar";
 
 function Search() {
+  // extract query params
+
+  // fetch for all restaurants with location = city
+  // ask only for data you need
+
+  // if there is no data show a no restaurants found message
   return (
     <>
       <Header />
