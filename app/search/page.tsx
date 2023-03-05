@@ -15,11 +15,38 @@ export interface RestaurantCardType {
   slug: string;
 }
 
-const fetchRestaurantsByCity = (
-  city?: string
-  // cuisine?: string,
-  // price?: PRICE
-) => {
+interface SearchParams {
+  city?: string;
+  cuisine?: string;
+  price?: PRICE;
+}
+
+const fetchRestaurantsByCity = (searchParams: SearchParams) => {
+  const where: any = {};
+
+  if (searchParams.city) {
+    const location = {
+      name: {
+        equals: searchParams.city.toLowerCase(),
+      },
+    };
+    where.location = location;
+  }
+  if (searchParams.cuisine) {
+    const cuisine = {
+      name: {
+        equals: searchParams.cuisine.toLowerCase(),
+      },
+    };
+    where.cuisine = cuisine;
+  }
+  if (searchParams.price) {
+    const price = {
+      equals: searchParams.price,
+    };
+    where.price = price;
+  }
+
   const select = {
     id: true,
     name: true,
@@ -30,15 +57,10 @@ const fetchRestaurantsByCity = (
     slug: true,
   };
 
-  if (!city) return prisma.restaurant.findMany({ select });
+  // if (!searchParams.city && !searchParams.cuisine && !searchParams.price)
+  //   return prisma.restaurant.findMany({ select });
   return prisma.restaurant.findMany({
-    where: {
-      location: {
-        name: {
-          equals: city.toLowerCase() || undefined,
-        },
-      },
-    },
+    where,
     select,
   });
 };
@@ -53,19 +75,8 @@ const fetchCuisines = async () => {
   return cuisines;
 };
 
-async function Search({
-  searchParams,
-}: {
-  searchParams: { city?: string; cuisine?: string; price?: PRICE };
-}) {
-  // extract query params
-  // console.log(searchParams.city);
-
-  // fetch for all restaurants with location = city
-  const restaurants = await fetchRestaurantsByCity(searchParams.city);
-
-  // ask only for data you need
-  // if there is no data show a no restaurants found message
+async function Search({ searchParams }: { searchParams: SearchParams }) {
+  const restaurants = await fetchRestaurantsByCity(searchParams);
 
   const locations = await fetchLocations();
   const cuisines = await fetchCuisines();
