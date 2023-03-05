@@ -9,28 +9,20 @@ export default function SearchSidebar({
   cuisines: Cuisine[];
   searchParams: { city?: string; cuisine?: string; price?: PRICE };
 }) {
-  // console.log(locations);
-
-  // console.log(cuisines);
-
-  // add different query parameters to our page url by clicking
-  // &cuisine=mexican
-  // preserve existing query params
-
   const prices = [
     {
       price: PRICE.CHEAP,
-      label: "$",
+      label: "$$",
       className: "rounded-l",
     },
     {
       price: PRICE.REGULAR,
-      label: "$$",
+      label: "$$$",
       className: "",
     },
     {
       price: PRICE.EXPENSIVE,
-      label: "$$$",
+      label: "$$$$",
       className: "rounded-r",
     },
   ];
@@ -38,7 +30,7 @@ export default function SearchSidebar({
   return (
     <div className="w-1/5">
       <div className="border-b pb-4 flex flex-col">
-        <h1 className="mb-2">Region</h1>
+        <h3 className="mb-2">Region</h3>
         {locations &&
           locations.map((city) => (
             <Link
@@ -54,7 +46,7 @@ export default function SearchSidebar({
           ))}
       </div>
       <div className="border-b pb-4 mt-3 flex flex-col ">
-        <h1 className="mb-2">Cuisine</h1>
+        <h3 className="mb-2">Cuisine</h3>
         {cuisines &&
           cuisines.map((cuisine) => (
             <Link
@@ -69,11 +61,12 @@ export default function SearchSidebar({
             </Link>
           ))}
       </div>
-      <div className="mt-3 pb-4 ">
-        <h1 className="mb-2">Price</h1>
+      <div className="border-b mt-3 pb-4 ">
+        <h3 className="mb-2">Price</h3>
         <div className="flex">
-          {prices.map((price) => (
+          {prices.map((price, i) => (
             <Link
+              key={i}
               href={{
                 pathname: "/search",
                 query: {
@@ -86,6 +79,17 @@ export default function SearchSidebar({
               {price.label}
             </Link>
           ))}
+        </div>
+      </div>
+      <div className="mt-4 pb-4 ">
+        {/* <h1 className="mb-2">Price</h1> */}
+        <div className="flex">
+          <Link
+            href={{ pathname: "/search", query: "" }}
+            className="text-reg font-reg p-2 border w-full text-center rounded"
+          >
+            Clear Search
+          </Link>
         </div>
       </div>
     </div>
