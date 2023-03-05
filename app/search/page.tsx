@@ -15,7 +15,11 @@ export interface RestaurantCardType {
   slug: string;
 }
 
-const fetchRestaurantsByCity = (city: string | undefined) => {
+const fetchRestaurantsByCity = (
+  city?: string
+  // cuisine?: string,
+  // price?: PRICE
+) => {
   const select = {
     id: true,
     name: true,
@@ -31,7 +35,7 @@ const fetchRestaurantsByCity = (city: string | undefined) => {
     where: {
       location: {
         name: {
-          equals: city.toLowerCase(),
+          equals: city.toLowerCase() || undefined,
         },
       },
     },
@@ -49,7 +53,11 @@ const fetchCuisines = async () => {
   return cuisines;
 };
 
-async function Search({ searchParams }: { searchParams: { city: string } }) {
+async function Search({
+  searchParams,
+}: {
+  searchParams: { city?: string; cuisine?: string; price?: PRICE };
+}) {
   // extract query params
   // console.log(searchParams.city);
 
@@ -67,7 +75,11 @@ async function Search({ searchParams }: { searchParams: { city: string } }) {
       <Header />
 
       <div className="flex py-4 m-auto w-2/3 justify-between items-start">
-        <SearchSidebar locations={locations} cuisines={cuisines} />
+        <SearchSidebar
+          locations={locations}
+          cuisines={cuisines}
+          searchParams={searchParams}
+        />
         <div className="w-5/6">
           {restaurants.length > 1 ? (
             restaurants.map((restaurant) => (
