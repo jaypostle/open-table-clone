@@ -1,12 +1,20 @@
 import Link from "next/link";
 import { RestaurantCardType } from "../page";
 import Price from "../../components/Price";
+import { calculateReviewRatingAverage } from "../../../utilities/calculateReviewRatingAverage";
 
 interface Props {
   restaurant: RestaurantCardType;
 }
 
 export default function RestaurantCard({ restaurant }: Props) {
+  const renderRatingText = () => {
+    const rating = calculateReviewRatingAverage(restaurant.reviews);
+    if (rating > 4) return "Awesome";
+    else if (rating <= 4 && rating > 3) return "Good";
+    else if (rating <= 3 && rating > 0) return "Average";
+    else "";
+  };
   return (
     <div className="border-b flex pb-5 ml-4">
       <img src={restaurant.main_image} alt="" className="w-44 h-36 rounded" />
@@ -14,7 +22,7 @@ export default function RestaurantCard({ restaurant }: Props) {
         <h2 className="text-3xl">{restaurant.name}</h2>
         <div className="flex items-start">
           <div className="flex mb-2">*****</div>
-          <p className="ml-2 text-sm">Awesome</p>
+          <p className="ml-2 text-sm">{renderRatingText()}</p>
         </div>
         <div className="mb-9">
           <div className="font-light flex text-reg">
