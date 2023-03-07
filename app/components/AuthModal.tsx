@@ -57,13 +57,15 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
 
             <div className="m-auto">
               <h2 className="text-2xl font-light text-center">
-                {" "}
                 {renderContent(
                   "Log Into Your Account",
                   "Create Your OpenTable Account"
                 )}
               </h2>
               <AuthModalInputs />
+              <button className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400">
+                {renderContent("Sign In", "Create Your Account")}
+              </button>
             </div>
           </div>
         </Box>
