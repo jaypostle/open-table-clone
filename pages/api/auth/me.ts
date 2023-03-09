@@ -9,34 +9,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // extract json web token from header
   const bearerToken = req.headers["authorization"] as string;
-  if (!bearerToken) {
-    return res
-      .status(401)
-      .json({ errorMessage: "Unauthorized request (no bearer token)." });
-  }
 
-  // get just the token from the header
   const token = bearerToken.split(" ")[1]; // splits the bearer token because it comes in with Bearer (space) then the token
-
-  if (!token) {
-    return res
-      .status(401)
-      .json({ errorMessage: "Unauthorized request (no token)." });
-  }
-
-  // get our secret
-  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-
-  // verify that the token matches the secret
-  try {
-    await jose.jwtVerify(token, secret);
-  } catch (error) {
-    return res
-      .status(401)
-      .json({ errorMessage: "Unauthorized request (token invalid)." });
-  }
 
   // get the payload of the header
   const payload = jwt.decode(token) as { email: string }; // as email string helps verify the proper type for when we call payload.email in the prisma call below
