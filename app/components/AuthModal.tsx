@@ -28,7 +28,7 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { signin } = useAuth();
+  const { signin, signup } = useAuth();
 
   const renderContent = (signinContent: string, signupContent: string) => {
     return isSignIn ? signinContent : signupContent;
@@ -68,7 +68,7 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   }, [inputs]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(e);
+  
     setInputs({
       ...inputs,
       [e.target.name]: e.target.value,
@@ -77,7 +77,9 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
 
   const handleClick = () => {
     if (isSignIn) {
-      signin({ email: inputs.email, password: inputs.password });
+      signin({ email: inputs.email, password: inputs.password }, handleClose);
+    } else {
+      signup(inputs, handleClose);
     }
   };
 
@@ -112,6 +114,9 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
               <div className="uppercase font-bold text-center pb-2 border-b mb-2">
                 <p className="text-sm">
                   {renderContent("Sign In", "Create Account")}
+                </p>
+                <p>
+                  {data?.firstName} {data?.lastName}
                 </p>
               </div>
 
